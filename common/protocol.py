@@ -6,7 +6,7 @@ Defines message types and structures for client-server communication.
 # Action types
 JOIN = "join"
 PLAYER_JOINED = "player_joined"
-PLAYER_LIST = "player_list" # Server response with the list
+PLAYER_LIST = "player_list"
 PLAYER_LEFT = "player_left"
 START_GAME = "start_game"
 GAME_STARTED = "game_started"

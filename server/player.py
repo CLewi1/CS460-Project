@@ -2,7 +2,7 @@
 Player representation for the card game.
 """
 
-from .card import Card  # Import Card if not already done (assuming it's needed for type hints or direct use)
+from .card import Card
 
 class Player:
     def __init__(self, username, websocket):

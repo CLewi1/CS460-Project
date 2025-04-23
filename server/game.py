@@ -6,7 +6,6 @@ import json
 import random
 from .card import Deck, Card, Suit, card_from_str
 from .player import Player
-from common import protocol
 
 class Game:
     def __init__(self):
@@ -132,16 +131,21 @@ class Game:
         if not top_card:
             return False, "Discard pile is empty (error)"
 
+        # Card is always playable if it's an 8
         if card.value == '8':
             return True, None
 
-        if self.current_suit:
-            if card.suit == self.current_suit:
-                return True, None
-        elif card.suit == top_card.suit or card.value == top_card.value:
+        # Check if the card matches the rank of the top card
+        if card.value == top_card.value:
             return True, None
 
-        return False, f"Card {card_str} doesn't match rank ({top_card.value}) or suit ({self.current_suit.value if self.current_suit else top_card.suit.value})"
+        # Check if the card matches the current suit (either declared after an 8 or the suit of the top card)
+        effective_suit = self.current_suit if self.current_suit else top_card.suit
+        if card.suit == effective_suit:
+            return True, None
+
+        # If none of the above conditions are met, the move is invalid
+        return False, f"Card {card_str} doesn't match rank ({top_card.value}) or suit ({effective_suit.value})"
 
     def make_move(self, username, card_str, declared_suit_str=None):
         """Process a player's move (playing a card)."""

@@ -7,8 +7,7 @@ import logging
 import websockets
 import threading
 from .game import Game
-from common import protocol
-from .card import Suit  # Import Suit for parsing declared suit
+import common.protocol as protocol
 
 logging.basicConfig(
     level=logging.INFO,
