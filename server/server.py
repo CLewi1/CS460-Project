@@ -206,6 +206,19 @@ class GameServer:
                         protocol.create_player_list_message(player_names)
                     )
                     logger.info(f"Sent player list to {username}: {player_names}")
+                
+                elif action == protocol.CHAT_MESSAGE: #Here we handle chat messages on server
+                    chat_message = data.get("message")
+                    if chat_message:
+                        logger.info(f"Chat message from {username}: {chat_message}")
+                        await self.game.broadcast(
+                            protocol.create_chat_message(username, chat_message),
+                            exclude_username=username
+                        )
+                    else:
+                        await websocket.send(json.dumps(
+                            protocol.create_error_message("Invalid chat message format.")
+                        ))
         
         except websockets.exceptions.ConnectionClosedOK:
             logger.info(f"Client {client_id} disconnected normally.")
