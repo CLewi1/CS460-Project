@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Card Game - Home{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Game Status</h4>
+            </div>
+            <div class="card-body">
+                {% if game.started %}
+                    <div class="alert alert-success">
+                        Game is in progress
+                    </div>
+                    <h5>Current Turn: <strong>{{ game.current_player }}</strong></h5>
+                    
+                    {% if game.top_card %}
+                        <h5>Top Card:</h5>
+                        <div id="top-card" class="card-visual {% if game.top_card[0] == 'H' or game.top_card[0] == 'D' %}card-red{% else %}card-black{% endif %}">
+                            <div class="card-value">{{ game.top_card[2:] }}</div>
+                            <div class="card-suit">
+                                {% if game.top_card[0] == 'H' %}♥{% endif %}
+                                {% if game.top_card[0] == 'D' %}♦{% endif %}
+                                {% if game.top_card[0] == 'C' %}♣{% endif %}
+                                {% if game.top_card[0] == 'S' %}♠{% endif %}
+                            </div>
+                            <div class="card-value-bottom">{{ game.top_card[2:] }}</div>
+                        </div>
+                        
+                        {% if game.current_suit and game.current_suit != game.top_card[0] %}
+                            <div class="mt-2">
+                                <p>Current suit: 
+                                    <strong>
+                                    {% if game.current_suit == 'H' %}Hearts ♥{% endif %}
+                                    {% if game.current_suit == 'D' %}Diamonds ♦{% endif %}
+                                    {% if game.current_suit == 'C' %}Clubs ♣{% endif %}
+                                    {% if game.current_suit == 'S' %}Spades ♠{% endif %}
+                                    </strong>
+                                </p>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <div class="alert alert-warning">
+                        Waiting for game to start
+                    </div>
+                    <p>Connect with the client application to join and start a game.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Connected Players ({{ game.player_count }})</h4>
+            </div>
+            <div class="card-body">
+                {% if game.players %}
+                    <ul class="list-group">
+                        {% for player in game.players %}
+                            <li class="list-group-item {% if game.current_player == player %}list-group-item-primary{% endif %}">
+                                {{ player }} {% if game.current_player == player %}<span class="badge bg-primary">Current Turn</span>{% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No players connected</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="auto-refresh">
+            This page refreshes automatically every 5 seconds.
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto-refresh the page every 5 seconds
+    setTimeout(function() {
+        location.reload();
+    }, 5000);
+</script>
+{% endblock %}

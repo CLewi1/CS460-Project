@@ -8,6 +8,7 @@ import websockets
 import threading
 from .game import Game
 import common.protocol as protocol
+from .webui import WebUI
 
 logging.basicConfig(
     level=logging.INFO,
@@ -16,11 +17,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class GameServer:
-    def __init__(self, host='localhost', port=8765):
+    def __init__(self, host='localhost', port=8765, web_port=5000):
         self.host = host
         self.port = port
+        self.web_port = web_port
         self.game = Game()
         self.clients = {}
+        self.webui = WebUI(self)
     
     async def handle_client(self, websocket):
         """Handle a client connection."""
@@ -281,6 +284,11 @@ class GameServer:
             self.handle_client, self.host, self.port
         )
         logger.info(f"Server started at ws://{self.host}:{self.port}")
+        
+        # Start the web UI in a separate thread
+        self.webui.start(host=self.host, port=self.web_port, debug=False)
+        logger.info(f"Web UI started at http://{self.host}:{self.web_port}")
+        
         return server
 
 async def main():

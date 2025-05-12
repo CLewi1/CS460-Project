@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Card Game - Admin{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Game Administration</h4>
+            </div>
+            <div class="card-body">
+                <h5>Game Status: 
+                    <span class="badge {% if game.started %}bg-success{% else %}bg-warning{% endif %}">
+                        {% if game.started %}In Progress{% else %}Waiting to Start{% endif %}
+                    </span>
+                </h5>
+                
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">Game Details</div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Current Player: <strong>{{ game.current_player or 'N/A' }}</strong></li>
+                                <li class="list-group-item">Deck Size: <strong>{{ game.deck_size }}</strong> cards</li>
+                                <li class="list-group-item">Discard Pile: <strong>{{ game.discard_size }}</strong> cards</li>
+                                {% if game.top_card %}
+                                <li class="list-group-item">
+                                    Top Card: 
+                                    <strong class="{% if game.top_card[0] == 'H' or game.top_card[0] == 'D' %}text-danger{% endif %}">
+                                        {{ game.top_card }}
+                                    </strong>
+                                </li>
+                                {% endif %}
+                                {% if game.current_suit %}
+                                <li class="list-group-item">
+                                    Current Suit: 
+                                    <strong class="{% if game.current_suit == 'H' or game.current_suit == 'D' %}text-danger{% endif %}">
+                                        {% if game.current_suit == 'H' %}Hearts ♥{% endif %}
+                                        {% if game.current_suit == 'D' %}Diamonds ♦{% endif %}
+                                        {% if game.current_suit == 'C' %}Clubs ♣{% endif %}
+                                        {% if game.current_suit == 'S' %}Spades ♠{% endif %}
+                                    </strong>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">Player Turn Order</div>
+                            <div class="card-body">
+                                {% if game.player_order %}
+                                <ol class="list-group list-group-numbered">
+                                    {% for player in game.player_order %}
+                                    <li class="list-group-item {% if game.current_player == player %}list-group-item-primary{% endif %}">
+                                        {{ player }}
+                                    </li>
+                                    {% endfor %}
+                                </ol>
+                                {% else %}
+                                <p>No turn order established yet</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Player Information</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Connection Status</th>
+                                <th>Cards in Hand</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if game.players %}
+                                {% for player, details in game.players.items() %}
+                                    <tr class="{% if game.current_player == player %}table-primary{% endif %}">
+                                        <td>{{ player }}</td>
+                                        <td>
+                                            <span class="badge {% if details.is_connected %}bg-success{% else %}bg-danger{% endif %}">
+                                                {% if details.is_connected %}Connected{% else %}Disconnected{% endif %}
+                                            </span>
+                                        </td>
+                                        <td>{{ details.hand_size }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center">No players connected</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="auto-refresh mt-3">
+            This page refreshes automatically every 5 seconds.
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto-refresh the page every 5 seconds
+    setTimeout(function() {
+        location.reload();
+    }, 5000);
+</script>
+{% endblock %}
