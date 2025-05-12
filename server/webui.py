@@ -32,8 +32,6 @@ class WebUI:
         @self.app.route('/')
         def index():
             """Home page - shows game status and connected players"""
-            if not self.game_server:
-                return render_template('error.html', message="Game server not initialized")
             
             players = list(self.game_server.game.players.keys())
             is_started = self.game_server.game.started
@@ -52,31 +50,6 @@ class WebUI:
             
             return render_template('index.html', game=game_info)
         
-        @self.app.route('/admin')
-        def admin():
-            """Admin page for monitoring and controlling the game"""
-            if not self.game_server:
-                return render_template('error.html', message="Game server not initialized")
-            
-            players = {}
-            for username, player in self.game_server.game.players.items():
-                players[username] = {
-                    'hand_size': len(player.hand),
-                    'is_connected': player.is_connected
-                }
-            
-            game_info = {
-                'started': self.game_server.game.started,
-                'players': players,
-                'current_player': self.game_server.game.get_current_player(),
-                'player_order': self.game_server.game.player_order,
-                'deck_size': len(self.game_server.game.deck.cards),
-                'discard_size': len(self.game_server.game.discard_pile),
-                'top_card': str(self.game_server.game.get_top_discard_card()) if self.game_server.game.discard_pile else None,
-                'current_suit': self.game_server.game.current_suit.value if self.game_server.game.current_suit else None
-            }
-            
-            return render_template('admin.html', game=game_info)
         
         @self.app.route('/api/game-state')
         def game_state_api():
