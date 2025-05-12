@@ -82,6 +82,8 @@ class ConsoleUI:
              if "hand" in data:
                  hand_str = "\n".join([f"  {i+1}. {card}" for i, card in enumerate(self.client.hand)])
                  message += f"\n🃏 Your hand:\n{hand_str}"
+        elif event_type == "chat_message":
+            print(f"\n💬 {data['player']}: {data['message']}") #here is where we call the chat function
 
         if message:
             print(f"\n{message}", flush=True)
@@ -160,6 +162,14 @@ class ConsoleUI:
             self.running = False
             await self.client.disconnect()
             return
+        
+        if user_input_lower.startswith('chat '): #here is where we call the chat function
+            message = user_input[5:].strip()
+            if message:
+                await self.client.send_chat_message(message)
+            else:
+                print("Please enter a message to send.")
+                needs_reprompt = True
 
         if self.waiting_for_suit_declaration:
             valid_suits = ["hearts", "diamonds", "clubs", "spades"]
