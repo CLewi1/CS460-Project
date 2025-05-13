@@ -168,21 +168,6 @@ h1 {
   transform: translateY(-10px);
 }
 
-.card-value {
-  position: absolute;
-  top: 5px;
-  left: 7px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.card-suit {
-  position: absolute;
-  top: 22px;
-  left: 7px;
-  font-size: 14px;
-}
-
 /* Card containers */
 .card-container {
   display: flex;

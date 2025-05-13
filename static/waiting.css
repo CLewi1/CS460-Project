@@ -41,3 +41,34 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.player-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px; /* Adjust as needed */
+}
+
+.player-circle {
+    width: 80px; /* Adjust as needed */
+    height: 80px; /* Adjust as needed */
+    border-radius: 50%;
+    margin-bottom: 5px; /* Space between circle and name */
+    /* textContent is removed, so no need for text alignment here */
+}
+
+.player-name-label {
+    font-size: 0.9em; /* Adjust as needed */
+    text-align: center;
+}
+
+.current-user {
+    border-color: yellow;
+    /* Or use border-color: yellow; if you prefer */
+}
+
+ul {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}

@@ -35,7 +35,7 @@
                             <div class="waiting-spinner"></div>
                             <div id="player-list"> <!-- Player list moved here -->
                                 <h3>Players:</h3>
-                                <ul id="players"></ul>
+                                <ul id="players" style="display: flex; justify-content: center;"></ul>
                             </div>
                             <div id="game-controls" style="text-align: center; margin-top: 20px;"> <!-- Moved here and adjusted margin -->
                                 <button id="start-btn" class="btn primary-btn">Start Game</button>
@@ -50,12 +50,6 @@
                     
                     <!-- Player's cards and controls -->
                     <div id="player-area" class="player-area">
-                        <div id="player-actions" class="player-actions">
-                            <button id="fold-btn" class="game-btn">Fold</button>
-                            <button id="call-btn" class="game-btn">Call 10</button>
-                            <button id="raise-btn" class="game-btn">Raise 20</button>
-                        </div>
-                        
                         <div id="hand-container">
                             <div id="player-hand" class="card-container"></div>
                         </div>
