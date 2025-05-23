@@ -78,7 +78,7 @@ class WebUI:
             
             return jsonify(game_info)
         
-    def start(self, host='0.0.0.0', port=5000, debug=False):
+    def start(self, host='0.0.0.0', port=5001, debug=False):
         """Start the Flask web server"""
         # Use a separate thread for Flask to avoid blocking the WebSocket server
         threading.Thread(

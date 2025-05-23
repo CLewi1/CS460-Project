@@ -2,7 +2,7 @@
 <html lang="en">
 <head>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casual Poker</title>
+    <title>Deck Link</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='waiting.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">
@@ -50,6 +50,10 @@
                     
                     <!-- Player's cards and controls -->
                     <div id="player-area" class="player-area">
+                        <div id="player-controls" class="game-controls">
+                            <button id="draw-btn" class="btn primary-btn">Draw Card</button>
+                            <div id="deck-info" class="deck-info"></div>
+                        </div>
                         <div id="hand-container">
                             <div id="player-hand" class="card-container"></div>
                         </div>
@@ -80,3 +84,4 @@
     <script src="{{ url_for('static', filename='login.js') }}"></script>
 
 </body>
+</html>

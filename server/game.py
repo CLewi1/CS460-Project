@@ -255,8 +255,8 @@ class Game:
             return False
 
         top_card = self.discard_pile.pop()
-        cards_to_reshuffle = self.discard_pile
-        self.discard_pile = [top_card]
+        cards_to_reshuffle = self.discard_pile.copy()  # Create a copy of the list
+        self.discard_pile = [top_card]  # Reset discard pile with just the top card
 
         self.deck.cards.extend(cards_to_reshuffle)
         self.deck.shuffle()

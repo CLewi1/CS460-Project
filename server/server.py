@@ -17,7 +17,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class GameServer:
-    def __init__(self, host='localhost', port=8765, web_port=5000):
+    def __init__(self, host='localhost', port=8765, web_port=5001):
         self.host = host
         self.port = port
         self.web_port = web_port
@@ -145,6 +145,10 @@ class GameServer:
                                     declared_suit=result_data.get("declared_suit")
                                 )
                             )
+                            
+                            # Log turn change to terminal
+                            logger.info(f"Turn changing to: {result_data['next_player']}")
+                            
                             await self.game.broadcast(
                                 protocol.create_turn_change_message(
                                     current_turn=result_data["next_player"],
@@ -189,6 +193,9 @@ class GameServer:
                         elif "next_player" in result_data:
                             logger.info(f"{username} tried to draw, but deck empty. Turn passed.")
                             await self.game.send_to_player(username, protocol.create_error_message(error))
+                            
+                            logger.info(f"Turn changing to: {result_data['next_player']}")
+                            
                             await self.game.broadcast(
                                 protocol.create_turn_change_message(
                                     current_turn=result_data["next_player"],
@@ -278,6 +285,11 @@ class GameServer:
                         top_card = self.game.get_top_discard_card()
                         current_suit = self.game.current_suit
                         logger.info(f"Player {username} left on their turn. New turn: {next_player}")
+                        
+                        # Log turn change to terminal when player leaves during their turn
+                        logger.info(f"Turn changing to: {next_player}")
+
+                        
                         await self.game.broadcast(
                             protocol.create_turn_change_message(
                                 current_turn=next_player,

@@ -13,7 +13,6 @@ h1 {
   color: white;
 }
 
-/* Player avatars row styling */
 .player-avatars {
   display: flex;
   justify-content: center;
@@ -54,22 +53,28 @@ h1 {
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
+.active-player .player-name-label {
+  text-decoration: underline;
+  font-size: 1.2em; 
+  font-weight: bold; 
+  color: #ffffff; 
+}
+
 .player-name {
   font-size: 14px;
   margin-bottom: 2px;
 }
 
-/* New styles for opponent text boxes */
 .opponent-textbox {
-  background-color: #2a2a2a; /* Darker background for the textbox */
-  color: #fff; /* White text */
-  border: 1px solid #444; /* Subtle border */
-  border-radius: 8px; /* Rounded corners */
-  padding: 10px 15px; /* Padding inside the textbox */
-  margin: 5px; /* Margin around each textbox */
-  text-align: center; /* Center the name inside the textbox */
-  min-width: 120px; /* Minimum width for the textbox */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  background-color: #2a2a2a; 
+  color: #fff; 
+  border: 1px solid #444;
+  border-radius: 8px; 
+  padding: 10px 15px;
+  margin: 5px;
+  text-align: center;
+  min-width: 120px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .opponent-name {
@@ -91,7 +96,7 @@ h1 {
   height: 20px;
   border-radius: 50%;
   background-color: var(--chip-green);
-  color: #333; /* Darker text for better readability */
+  color: #333;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -104,7 +109,6 @@ h1 {
   background-color: var(--chip-yellow);
 }
 
-/* Community cards section */
 .community-cards {
   display: flex;
   justify-content: center;
@@ -113,16 +117,12 @@ h1 {
   min-height: 150px;
 }
 
-/* Player area with cards and action buttons */
 .player-area {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: auto;
-  gap: 15px;
 }
 
-/* Game action buttons */
 .player-actions {
   display: flex;
   gap: 10px;
@@ -147,12 +147,6 @@ h1 {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
 
-#raise-btn {
-  background-color: var(--primary-color);
-  color: #222; /* Darker text for better contrast on the light gray background */
-}
-
-/* Updated card styling to match the image */
 .card {
   width: 70px;
   height: 100px;
@@ -168,30 +162,27 @@ h1 {
   transform: translateY(-10px);
 }
 
-/* Card containers */
 .card-container {
   display: flex;
   justify-content: center;
   gap: 8px;
+  flex-wrap: wrap;
+  max-width: 100%;
 }
 
-/* Face down card styling */
-.card.face-down {
-  background: url('../images/card-back.png') center center no-repeat;
-  background-size: cover;
+#hand-container {
+  width: 100%;
+  overflow-x: auto;
+  padding: 15px 0;
 }
 
-/* Community card placeholder */
-.card.placeholder {
-  background-color: rgba(255,255,255,0.1);
-  border: 1px dashed rgba(255,255,255,0.3);
-  box-shadow: none;
+#player-hand {
+  min-height: 120px;
 }
 
-/* Download-style button like in the image */
 .download-style {
   background-color: var(--primary-color);
-  color: #222; /* Darker text for better contrast */
+  color: #222;
   font-size: 18px;
   font-weight: 600;
   padding: 15px 40px;
@@ -203,10 +194,104 @@ h1 {
 
 .download-style:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(200, 200, 200, 0.3); /* Softer glow */
+  box-shadow: 0 0 20px rgba(200, 200, 200, 0.3);
 }
 
-/* Media queries for responsive design */
+.top-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.declared-suit-indicator {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-top: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.declared-suit-value {
+  font-weight: bold;
+  color: #d4d4d4;
+}
+
+.game-controls {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+}
+
+#draw-btn {
+  padding: 8px 20px;
+  border-radius: 50px;
+  background-color: var(--primary-color);
+  color: #222;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#draw-btn:disabled {
+  background-color: #555;
+  color: #999;
+  cursor: not-allowed;
+}
+
+#draw-btn:not(:disabled):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 3px 8px rgba(255, 255, 255, 0.3);
+}
+
+@media (min-width: 769px) {
+
+  #player-hand.many-cards .card {
+    width: calc(60px - 1vw);
+    height: calc(85px - 1vw);
+    margin: 0 2px;
+  }
+
+  #player-hand.many-cards .card-value {
+    font-size: 10px;
+  }
+  
+  #player-hand.many-cards .card-suit {
+    font-size: 10px;
+  }
+
+  #player-hand.lots-of-cards .card {
+    width: calc(50px - 1vw);
+    height: calc(75px - 1vw);
+    margin: 0 1px;
+  }
+
+  #player-hand.lots-of-cards .card-value {
+    font-size: 8px;
+  }
+  
+  #player-hand.lots-of-cards .card-suit {
+    font-size: 8px;
+  }
+
+  #player-hand.overflow-cards .card {
+    width: calc(40px - 1vw);
+    height: calc(60px - 1vw);
+    margin: 0;
+  }
+
+  #player-hand.overflow-cards .card-value {
+    font-size: 6px;
+  }
+  
+  #player-hand.overflow-cards .card-suit {
+    font-size: 6px;
+  }
+}
+
 @media (max-width: 768px) {
   .player-avatars {
     flex-wrap: wrap;
@@ -216,6 +301,48 @@ h1 {
   .card {
     width: 60px;
     height: 85px;
+    margin: 0 2px;
+  }
+  
+  #player-hand.many-cards .card {
+    width: 45px;
+    height: 65px;
+    margin: 0 1px;
+  }
+
+  #player-hand.many-cards .card-value {
+    font-size: 10px;
+  }
+  #player-hand.many-cards .card-suit {
+    font-size: 10px;
+  }
+  
+  #player-hand.lots-of-cards .card {
+    width: 35px;
+    height: 50px;
+    margin: 0;
+  }
+
+  #player-hand.lots-of-cards .card-value {
+    font-size: 8px;
+  }
+
+  #player-hand.lots-of-cards .card-suit {
+    font-size: 8px;
+  }
+  
+  #player-hand.overflow-cards .card {
+    width: 30px;
+    height: 45px;
+    margin: 0;
+  }
+
+  #player-hand.overflow-cards .card-value {
+    font-size: 6px;
+  }
+
+  #player-hand.overflow-cards .card-suit {
+    font-size: 6px;
   }
   
   .game-btn {
