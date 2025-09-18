@@ -8,6 +8,7 @@ import websockets
 import threading
 from .game import Game
 import common.protocol as protocol
+from .webui import WebUI
 
 logging.basicConfig(
     level=logging.INFO,
@@ -16,11 +17,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class GameServer:
-    def __init__(self, host='localhost', port=8765):
+    def __init__(self, host='localhost', port=8765, web_port=5001):
         self.host = host
         self.port = port
+        self.web_port = web_port
         self.game = Game()
         self.clients = {}
+        self.webui = WebUI(self)
     
     async def handle_client(self, websocket):
         """Handle a client connection."""
@@ -142,6 +145,10 @@ class GameServer:
                                     declared_suit=result_data.get("declared_suit")
                                 )
                             )
+                            
+                            # Log turn change to terminal
+                            logger.info(f"Turn changing to: {result_data['next_player']}")
+                            
                             await self.game.broadcast(
                                 protocol.create_turn_change_message(
                                     current_turn=result_data["next_player"],
@@ -186,6 +193,9 @@ class GameServer:
                         elif "next_player" in result_data:
                             logger.info(f"{username} tried to draw, but deck empty. Turn passed.")
                             await self.game.send_to_player(username, protocol.create_error_message(error))
+                            
+                            logger.info(f"Turn changing to: {result_data['next_player']}")
+                            
                             await self.game.broadcast(
                                 protocol.create_turn_change_message(
                                     current_turn=result_data["next_player"],
@@ -206,6 +216,19 @@ class GameServer:
                         protocol.create_player_list_message(player_names)
                     )
                     logger.info(f"Sent player list to {username}: {player_names}")
+                
+                elif action == protocol.CHAT_MESSAGE: #Here we handle chat messages on server
+                    chat_message = data.get("message")
+                    if chat_message:
+                        logger.info(f"Chat message from {username}: {chat_message}")
+                        await self.game.broadcast(
+                            protocol.create_chat_message(username, chat_message),
+                            exclude_username=username
+                        )
+                    else:
+                        await websocket.send(json.dumps(
+                            protocol.create_error_message("Invalid chat message format.")
+                        ))
         
         except websockets.exceptions.ConnectionClosedOK:
             logger.info(f"Client {client_id} disconnected normally.")
@@ -262,6 +285,11 @@ class GameServer:
                         top_card = self.game.get_top_discard_card()
                         current_suit = self.game.current_suit
                         logger.info(f"Player {username} left on their turn. New turn: {next_player}")
+                        
+                        # Log turn change to terminal when player leaves during their turn
+                        logger.info(f"Turn changing to: {next_player}")
+
+                        
                         await self.game.broadcast(
                             protocol.create_turn_change_message(
                                 current_turn=next_player,
@@ -281,6 +309,11 @@ class GameServer:
             self.handle_client, self.host, self.port
         )
         logger.info(f"Server started at ws://{self.host}:{self.port}")
+        
+        # Start the web UI in a separate thread
+        self.webui.start(host=self.host, port=self.web_port, debug=False)
+        logger.info(f"Web UI started at http://{self.host}:{self.web_port}")
+        
         return server
 
 async def main():

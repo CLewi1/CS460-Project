@@ -1,0 +1,561 @@
+/* Card Game Styles - Dark Theme - Redesigned for the sleek poker UI */
+:root {
+  --primary-color: #d4d4d4; /* Soft gray instead of yellow */
+  --primary-hover: #a0a0a0;
+  --secondary-color: #2c3033;
+  --text-color: #a0a0a0; /* Light gray text */
+  --border-color: #3a3f43;
+  --card-bg: #ffffff;
+  --hearts-diamonds-color: #ff6b6b;
+  --clubs-spades-color: #222222;
+  --bg-dark: #000000;
+  --bg-darker: #000000;
+  --panel-bg: #121212;
+  --button-bg: #2c2c2c;
+  --button-text: #ffffff;
+  --stats-bg: #2c2c2c;
+  --stats-color-gold: #cccccc; /* Light gray instead of gold */
+  --chip-green: #88cc88; /* Softer green */
+  --chip-yellow: #bbbbbb; /* Gray instead of yellow */
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; 
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-color);
+  line-height: 1.6;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 20px auto;
+  background-color: var(--bg-darker);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.container.full-width {
+  max-width: none;
+  width: 95%;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container.full-width #game-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.container.full-width .game-layout {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+h1, h2, h3 {
+  color: var(--text-color);
+  margin-top: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+
+.panel {
+  margin-bottom: 30px;
+  padding: 25px;
+  border-radius: 8px;
+  background-color: var(--panel-bg);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #bfc8d0;
+}
+
+.form-control {
+  width: --webkit-fill-available;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #2a2e35;
+  color: var(--text-color);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(109, 140, 176, 0.3);
+}
+
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.primary-btn {
+  background-color: var(--primary-color);
+  color: #222; /* Darker text color for gray background */
+}
+
+.primary-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.primary-btn:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+#game-info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+#game-status, #current-turn {
+  font-weight: 600;
+}
+
+#player-list {
+  flex: 1;
+  min-width: 200px;
+}
+
+#players li {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#turn-info {
+  padding: 10px 15px;
+  border-radius: 6px;
+  background-color: #343942;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.card {
+  width: 90px;  /* Slightly smaller like in the image */
+  height: 130px;
+  background-color: #ffffff; /* White background for cards like in the image */
+  border: 1px solid #e0e0e0;
+  border-radius: 25px; /* Increased for more rounded corners */
+  display: flex; /* Still useful for other potential content, or remove if strictly absolute */
+  flex-direction: column; /* Not strictly necessary with absolute positioning of children */
+  justify-content: space-between; /* Not strictly necessary with absolute positioning */
+  align-items: flex-start; /* Not strictly necessary with absolute positioning */
+  padding: 8px;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+  position: relative; /* Crucial for absolute positioning of children */
+}
+
+.card.playable:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card:not(.playable) {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.card.community-card {
+  opacity: 1 !important; /* Always show community cards at full opacity */
+  cursor: default; /* No pointer cursor on community cards */
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); /* Slight glow to highlight it */
+}
+
+.card-value {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1;
+  position: absolute; 
+  top: 20px;         
+  left: 20px;       
+}
+
+.card-suit {
+  font-size: 36px;
+  margin: 0;
+  position: absolute; 
+  bottom: 20px;      
+  left: 12px;        
+  line-height: 1;
+}
+
+.card.hearts, .card.diamonds {
+  color: var(--hearts-diamonds-color);
+}
+
+.card.clubs, .card.spades {
+  color: var(--clubs-spades-color);
+}
+
+.card.hearts::before, .card.diamonds::before {
+  color: var(--hearts-diamonds-color);
+}
+
+.card.clubs::before, .card.spades::before {
+  color: var(--clubs-spades-color);
+}
+
+#hand-container {
+  margin-bottom: 25px;
+}
+
+#game-log {
+  flex: 1;
+  margin-top: 15px;
+  min-height: 0; 
+  max-height: 450px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #2c2c2c;
+}
+
+#log-messages {
+  font-family: 'Courier New', monospace;
+}
+
+.log-entry {
+  padding: 8px 10px;
+  border-bottom: 1px solid #efefef;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+@media (max-width: 1500px) {
+  .card-table-svg {
+    transform: scale(1.5) rotate(90deg);
+  }
+}
+
+/* Styles for the player list and opponent row */
+.player-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
+.player-circle {
+  width: 60px; /* Adjusted for a more compact look */
+  height: 60px; /* Adjusted for a more compact look */
+  border-radius: 50%;
+  margin-bottom: 5px;
+  display: flex; /* For centering text if it were inside, though name is now below */
+  align-items: center;
+  justify-content: center;
+  font-weight: bold; /* If you ever put initials or numbers in circles */
+  color: white; /* Example text color if text were in circle */
+}
+
+.player-name-label {
+  font-size: 1em;
+  text-align: center;
+  margin-top: 2px; /* A little space above the name */
+}
+
+/* Make the UI responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  #game-info {
+    flex-direction: column;
+  }
+  
+  #player-list {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .card {
+    width: 100px;
+    height: 150px;
+  }
+}
+
+/* Game Layout Styles */
+.game-layout {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+}
+
+.game-sidebar {
+  flex: 0 0 25%;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%; /* Limit height to container */
+}
+
+.left-sidebar {
+  max-width: 300px;
+}
+
+.right-sidebar {
+  max-width: 250px;
+}
+
+.game-sidebar .panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Hide scrollbars */
+  margin-bottom: 0; /* Remove bottom margin */
+}
+
+.game-table {
+  flex: 1;
+  background-color: #000000; /* Pure black background to match image */
+  border-radius: 12px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: space-between; /* To position player avatars on top and cards at bottom */
+  min-height: 0; /* Allow shrinking */
+  position: relative; /* For proper positioning of elements */
+  overflow: hidden;
+}
+
+.table-svg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-table-svg {
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  position: absolute;
+  opacity: 0.95;
+}
+
+.game-table #hand-container {
+  margin-top: auto; /* Push cards to bottom */ 
+  position: relative;
+  z-index: 2; /* Ensure cards appear above the SVG and overlay */
+}
+
+/* Card styling adjustments for green background */
+.game-table .card { 
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid #e0e0e0;
+}
+
+.game-table #hand-container h3 {
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+  margin-bottom: 15px;
+  font-size: 1.3em;
+  font-weight: 600;
+  z-index: 2;
+  position: relative;
+}
+
+#chat-placeholder {
+  background-color: #2c2c2c;
+  border-radius: 6px;
+  padding: 15px;
+  text-align: center;
+  color: #666;
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-messages {
+  height: 450px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+/* Update SVG container for better responsive scaling */
+.table-svg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.card-table-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  opacity: 0.95;
+  transform-origin: center center;
+  transition: transform 0.5s ease, rotate 0.5s ease;
+  /* Preserve aspect ratio while covering the container */
+  transform: scale(1.1); /* Slightly larger to avoid gaps at edges */
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 992px) {
+  .game-layout {
+    flex-direction: column;
+  }
+  
+  .game-sidebar {
+    flex: 0 0 auto;
+    max-width: 100%;
+  }
+  
+  .game-table {
+    min-height: 300px;
+  }
+  
+  .card-table-svg {
+    transform: scale(1.2); /* Adjust scale for better fit on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  #game-info {
+    flex-direction: column;
+  }
+  
+  #player-list {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .card {
+    width: 100px;
+    height: 150px;
+  }
+  
+  .card-table-svg {
+    transform: scale(1.3); /* Increase scale for smaller screens to focus on the center */
+  }
+}
+
+/* For very small screens, rotate the SVG to vertical orientation */
+@media (max-width: 576px) {
+  .game-table {
+    padding: 10px;
+  }
+  
+  .card-table-svg {
+    transform: scale(1.5) rotate(90deg); /* Rotate SVG to vertical orientation */
+    width: 150%; /* Make it larger to fill the space */
+    height: 150%;
+  }
+  
+  /* Adjust the cards for the new orientation */
+  .game-table #hand-container {
+    margin-top: 0;
+    margin-bottom: 10px;
+    z-index: 3; /* Ensure it stays above the rotated SVG */
+  }
+  
+  .card {
+    width: 90px;
+    height: 135px;
+  }
+  
+  .card-value {
+    font-size: 24px;
+  }
+  
+  .card-suit {
+    font-size: 32px;
+  }
+}
+
+/* Extreme small screens - more dramatic adjustments */
+@media (max-width: 400px) {
+  .card-table-svg {
+    transform: scale(1.8) rotate(90deg); /* Even larger scale for very small screens */
+  }
+  
+  .card {
+    width: 80px;
+    height: 120px;
+  }
+}

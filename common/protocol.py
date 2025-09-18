@@ -20,6 +20,7 @@ ERROR = "error"
 GAME_OVER = "game_over"
 LIST_PLAYERS = "list_players" # Client request for the list
 UPDATE_GAME_STATE = "update_game_state" # Server sends general game state update
+CHAT_MESSAGE = "chat_message" # Client sends a chat message
 
 # Helper functions to create messages
 def create_join_message(username):
@@ -125,3 +126,8 @@ def create_update_game_state_message(current_turn, top_card, current_suit, hand=
     if hand is not None: # Optionally include hand if sending to a specific player
         state["hand"] = hand
     return {"action": UPDATE_GAME_STATE, "gameState": state}
+
+
+def create_chat_message(sender, message): #Here we define the chat message for our game
+    """Client sends a chat message."""
+    return {"action": CHAT_MESSAGE, "sender": sender, "message": message}
