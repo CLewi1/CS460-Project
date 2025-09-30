@@ -1,7 +1,7 @@
 
 # Deck Link: Multiplayer Crazy Eights
 
-Deck Link is a real-time, multiplayer Crazy Eights card game. Play with friends in your browser or via a Python console client! The game features a modern web UI, chat, and full Crazy Eights rules.
+A simple razy 8 game created as a final project for a Computer Networking class. The goal was to create an application which communicated between server and client using a custom built protocol. 
 
 ## Features
 
